@@ -12,3 +12,11 @@ WITH n AS n_fuente, COUNT(r) as cuenta_relaciones
 return n_fuente, cuenta_relaciones AS count
 ORDER BY cuenta_relaciones DESC;
 // id: subredditdrama con 1437
+
+
+// cual es el subreddit que más post positivos recibe?
+MATCH (n:TargetSubreddit {type: 'Target'})<-[r:positive_report_on]-(m:SourceSubreddit {type: 'Source'})
+WITH n as n_fuente, COUNT(r) as cuenta_relaciones
+return n_fuente, cuenta_relaciones AS count
+ORDER BY cuenta_relaciones DESC;
+// id: askreddit 6437
