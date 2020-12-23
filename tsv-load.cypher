@@ -69,6 +69,14 @@ return n;
 
 MATCH (n)-[r]-(m) return n,r,m LIMIT 20;
 
+LOAD CSV WITH HEADERS FROM "file:///soc-redditHyperlinks-body.tsv" AS row FIELDTERMINATOR '\t'
+WITH DISTINCT row.SOURCE_SUBREDDIT as source
+CREATE (n:SourceSubreddit { name: source, type: 'Source' });
+
+LOAD CSV WITH HEADERS FROM "file:///soc-redditHyperlinks-body.tsv" AS row FIELDTERMINATOR '\t'
+WITH DISTINCT row.TARGET_SUBREDDIT as target
+CREATE (n:TargetSubreddit { name: target, type: 'Target' });
+
 
 // -----CARGA negative report on----- //
 LOAD CSV WITH HEADERS FROM "file:///soc-redditHyperlinks-body.tsv" as row FIELDTERMINATOR "\t"
