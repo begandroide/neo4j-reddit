@@ -20,3 +20,11 @@ WITH n as n_fuente, COUNT(r) as cuenta_relaciones
 return n_fuente, cuenta_relaciones AS count
 ORDER BY cuenta_relaciones DESC;
 // id: askreddit 6437
+
+
+// cual es el subreddit que más post negativos recibe?
+MATCH (n:TargetSubreddit {type: 'Target'})<-[r:negative_report_on]-(m:SourceSubreddit {type: 'Source'})
+WITH n as n_fuente, COUNT(r) as cuenta_relaciones
+return n_fuente, cuenta_relaciones AS count
+ORDER BY cuenta_relaciones DESC;
+// id: askreddit con 892
