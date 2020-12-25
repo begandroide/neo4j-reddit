@@ -28,3 +28,11 @@ WITH n as n_fuente, COUNT(r) as cuenta_relaciones
 return n_fuente, cuenta_relaciones AS count
 ORDER BY cuenta_relaciones DESC;
 // id: askreddit con 892
+
+// detectar ciclos en el grafo
+MATCH p=(n)-[*]-(n) RETURN nodes(p);
+// no pueden existir ciclos por la naturaleza de las relaciones y los nodos,
+// Solo de un nodo tipo SourceSubreddit saldrá una relación, la cual SIEMPRE 
+// apunta a un nodo de tipo TargetSubreddit, la cual sabemos que gracias al 
+// proceso de carga no saldrán relaciones por lo que no podrá volver al nodo target.
+
