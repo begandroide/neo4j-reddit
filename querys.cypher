@@ -55,3 +55,10 @@ RETURN n,r,m,r.fractionOfStopwords AS fractionStopWords
 ORDER BY r.fractionOfStopwords DESC
 LIMIT 200;
 // 1373
+
+// determinando polaridad
+MATCH (n)-[r]->(m)
+WITH type(r) AS tipo, r ORDER BY r.fractionOfStopwords DESC LIMIT 200
+RETURN tipo, Count(tipo) AS link_sentiment;
+// positive: 195, negative: 5
+
