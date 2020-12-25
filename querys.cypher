@@ -41,3 +41,10 @@ MATCH (n)-[r]->(m)
 RETURN n,r,m,r.numberOfSentences AS numberOfSent
 ORDER BY r.numberOfSentences DESC
 LIMIT 200;
+
+/// determinando polaridad
+MATCH (n)-[r]->(m)
+WITH type(r) AS tipo, r ORDER BY r.numberOfSentences DESC LIMIT 200
+RETURN tipo, Count(tipo) AS link_sentiment;
+// positive: 190, negative: 10
+
