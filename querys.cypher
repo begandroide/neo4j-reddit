@@ -75,3 +75,38 @@ WITH type(r) AS tipo, r ORDER BY r.fractionOfUppercaseCharacters DESC LIMIT 200
 RETURN tipo, Count(tipo) AS link_sentiment;
 // positive: 200, negative: 0
 
+
+// ¿detectar si un target es un bot?
+MATCH (n)-[r]-(m) return n,r,m ORDER BY r.timestamp DESC LIMIT 25;
+
+// fecha y hora en que hubieron más reportes positivos
+MATCH ()-[r:positive_report_on]->() 
+RETURN r.timestamp as year,count(*) as count
+ORDER BY count DESC;
+
+MATCH ()-[r:negative_report_on]->() 
+RETURN r.timestamp as year,count(*) as count
+ORDER BY count DESC;
+
+// por año y tipo
+MATCH ()-[r]->() 
+RETURN r.timestamp.year as year, type(r), count(*) as count
+ORDER BY year DESC
+
+// día de la semana en que los usuarios están mas activos por tipo de reporte
+MATCH ()-[r]->() 
+RETURN r.timestamp.dayofWeek as day, type(r), count(*) as count
+ORDER BY count DESC;
+// 2 -> 1 -> 3 -> 4 -> 5 -> 7 -> 6
+
+// Día de la semana en que los usuarios están mas activos
+MATCH ()-[r]->() 
+RETURN r.timestamp.dayofWeek as day, count(*) as count
+ORDER BY count DESC;
+// 2 -> 1 -> 3 -> 4 -> 5 -> 7 -> 6
+
+// hora del día en qe los usuarios están mas activos
+MATCH ()-[r]->() 
+RETURN r.timestamp.hour as hour, count(*) as count
+ORDER BY count DESC;
+
