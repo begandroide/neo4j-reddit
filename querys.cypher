@@ -36,3 +36,8 @@ MATCH p=(n)-[*]-(n) RETURN nodes(p);
 // apunta a un nodo de tipo TargetSubreddit, la cual sabemos que gracias al 
 // proceso de carga no saldrán relaciones por lo que no podrá volver al nodo target.
 
+// los 200 links con más número de sentencias
+MATCH (n)-[r]->(m)
+RETURN n,r,m,r.numberOfSentences AS numberOfSent
+ORDER BY r.numberOfSentences DESC
+LIMIT 200;
