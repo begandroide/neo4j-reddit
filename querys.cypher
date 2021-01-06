@@ -76,7 +76,7 @@ RETURN tipo, Count(tipo) AS link_sentiment;
 // positive: 200, negative: 0
 
 
-// ¿detectar si un target es un bot?
+// ¿detectar si un source es un bot?
 MATCH (n)-[r]-(m) return n,r,m ORDER BY r.timestamp DESC LIMIT 25;
 
 // fecha y hora en que hubieron más reportes positivos
@@ -110,3 +110,34 @@ MATCH ()-[r]->()
 RETURN r.timestamp.hour as hour, count(*) as count
 ORDER BY count DESC;
 
+// pagerank? puede ser algo weno
+
+CALL gds.pageRank.stream({
+	nodeProjection: "*",
+    relationshipProjection: "*"
+})
+YIELD nodeId, score
+RETURN gds.util.asNode(nodeId).name AS page,gds.util.asNode(nodeId).type, score
+ORDER BY score DESC;
+
+// detectando comunidades 
+CALL gds.louvain.stream({
+	nodeProjection: '*',
+    relationshipProjection: '*',
+    includeIntermediateCommunities: false
+})
+YIELD nodeId, communityId
+WITH gds.util.asNode(nodeId).name as Name, communityId as commId
+RETURN DISTINCT commId, collect(Name);
+
+CALL gds.louvain.write({
+	nodeProjection: '*',
+    relationshipProjection: '*',
+    includeIntermediateCommunities: false,
+    writeProperty: 'finalCommunity'
+})
+
+MATCH (n)
+WITH n.finalCommunity AS community, collect(n.name) as communities
+RETURN community, communities, size(communities) as Size
+ORDER BY Size DESC;
